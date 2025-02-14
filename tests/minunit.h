@@ -6,6 +6,7 @@
 #include "../src/lcthw/dbg.h"
 #include <stdlib.h>
 
+#define UNUSED(x) (void)(x)
 #define mu_suite_start() char *message = NULL;
 
 #define mu_assert(test, message) if (!(test)) {\
@@ -14,6 +15,7 @@
         message = test(); tests_run++; if (message) return message;
 
 #define RUN_TESTS(name) int main(int argc, char *argv[]) { \
+        UNUSED(argc); \
         argc = 1; \
         debug("\n-----\nRUNNING: %s", argv[0]); \
         printf("----\nRUNNING: %s\n", argv[0]); \

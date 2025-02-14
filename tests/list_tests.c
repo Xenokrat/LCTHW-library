@@ -16,6 +16,27 @@ char *test_create()
     return NULL;
 }
 
+char *test_print()
+{
+    List *list_print = List_create();
+    mu_assert(list_print != NULL, "Failed to create list_print");
+    char *examples[] = { "node1", "node2", "node3" };
+
+    for (size_t i = 0; i < sizeof(examples) / sizeof(examples[0]); i++) {
+        List_push(list_print, examples[i]);
+    }
+
+    List_print_str(list_print);
+
+    for (size_t i = 0; i < sizeof(examples) / sizeof(examples[0]); i++) {
+        List_pop(list_print);
+    }
+
+    List_destroy(list_print);
+
+    return NULL;
+}
+
 char *test_destroy()
 {
     List_clear_destroy(list);
@@ -171,7 +192,6 @@ char *test_split()
 
     List *list_split = List_split(list_test, "test2", str_node_eq);
 
-
     mu_assert(
         strcmp(list_test->first->value, "test1") == 0, 
         "Wrong value on test split"
@@ -198,9 +218,13 @@ char *test_split()
         "Should not modify list_test"
     );
 
-    List_destroy(list_test);
-    List_destroy(list_split);
-    List_destroy(list_split2);
+    if (list_test)
+        List_destroy(list_test);
+    if (list_split)
+        List_destroy(list_split);
+    if (list_split2)
+        List_destroy(list_split2);
+
     return NULL;
 }
 
@@ -217,6 +241,7 @@ char *all_tests()
     mu_run_test(test_copy);
     mu_run_test(test_join);
     mu_run_test(test_split);
+    mu_run_test(test_print);
     mu_run_test(test_destroy);
 
     return NULL;

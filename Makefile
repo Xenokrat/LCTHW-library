@@ -1,5 +1,6 @@
 CC=clang
-CFLAGS=-g -Wall -Isrc -rdynamic -DNDEBUG $(OPTFLAGS) 
+# CFLAGS=-g -Wall -Isrc -rdynamic -DNDEBUG $(OPTFLAGS) 
+CFLAGS=-g -Wall -Isrc -DNDEBUG $(OPTFLAGS) 
 # -Isrc - включить все header-files из src
 # -rdynamic - сказать линкеру включить все символы, не только используемые
 # 	это нужно для bactrace или dlopen
@@ -54,6 +55,7 @@ build:
 # The Unit Tests
 .PHONY: tests
 tests: LDLIBS += $(TARGET)
+tests: CFLAGS=-g -Wall -Isrc -Wextra -fsanitize=address $(OPTFLAGS)
 # trick for modifying the CFLAGS variable to add the TARGET to the build
 # so that each of the test programs will be linked
 # with the TARGET library.

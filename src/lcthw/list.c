@@ -8,6 +8,24 @@ int str_node_eq(void *value1, void *value2)
     return (strcmp((char*)value1, (char*)value2) == 0); 
 }
 
+void List_print_str(List *list)
+{
+    {
+        printf("X->");
+        LIST_FOREACH(list, first, next, cur) {
+            printf("%s->", (char*) cur->value);
+        }
+        printf("X\n");
+    }
+    {
+        printf("X<-");
+        LIST_FOREACH(list, last, prev, cur) {
+            printf("%s<-", (char*) cur->value);
+        }
+        printf("X\n");
+    }
+}
+
 List *List_create(void)
 {
     List* res = NULL;
@@ -246,21 +264,28 @@ List *List_split(List *list, void *value, Fn_node_eq fn)
     check_mem(second_list);
 
     ListNode *node = NULL;
-
+    int i = 0;
     int found = 0;
 
     LIST_FOREACH(list, first, next, cur) {
         if (found) {
             List_push(second_list, cur->value);
         }
-        if (fn(cur->value, value)) {
-            if (!found) node = cur;
+        if (!found && fn(cur->value, value)) {
+            node = cur;
             found = 1;
         }
     }
+    
+    for (i = 0; i < second_list->count; i++) {
+        List_pop(list);
+    }
+
     /* if we found value to split, we will modify this node */
     if (node) {
-         node->next->prev = NULL;
+         if (node->next) {
+            node->next->prev = NULL;
+         }
          node->next = NULL;
          list->count -= second_list->count;
          list->last = node;
@@ -271,6 +296,7 @@ List *List_split(List *list, void *value, Fn_node_eq fn)
         return second_list;
     } else {
         List_destroy(second_list);
+        return NULL;
     }
 
 error:

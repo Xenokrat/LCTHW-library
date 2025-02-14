@@ -33,6 +33,8 @@ void List_destroy(List *list);                 /* Deallocate all ListNode and fr
 void List_clear(List *list);                   /* Deallocate all values in ListNodes */
 void List_clear_destroy(List *list);           /* Free all values in ListNodes, free ListNodes, free List */
 
+void List_print_str(List *list);           /* This just a helper function to print list to stdout */
+
 /* Macros for easy access to count, first and last ListNode in List */
 #define List_count(A) ((A)->count)
 #define List_first(A) ((A)->first != NULL ? (A)->first->value : NULL)
