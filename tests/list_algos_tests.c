@@ -69,8 +69,6 @@ char *test_swap_nodes()
          cur != NULL && i < tst_len; 
          i++, cur = cur->next) 
     {
-        printf("i: %d, tst[i]: %s, cur->value: %s\n", 
-                i, tst[i], (char*) cur->value);
         mu_assert(strcmp((char*) cur->value, tst[i]) == 0,
                   "Fail to swap non-adjacent nodes correctly (forward)");
     }
@@ -80,8 +78,6 @@ char *test_swap_nodes()
          cur != NULL && i >= 0; 
          i--, cur = cur->prev) 
     {
-        printf("i: %d, tst[i]: %s, cur->value: %s\n", 
-                i, tst[i], (char*) cur->value);
         mu_assert(strcmp((char*) cur->value, tst[i]) == 0,
                   "Fail to swap non-adjacent nodes correctly (backward)");
     }
@@ -98,8 +94,6 @@ char *test_swap_nodes()
          cur != NULL && i < tst_len; 
          i++, cur = cur->next) 
     {
-        printf("i: %d, tst2[i]: %s, cur->value: %s\n", 
-                i, tst2[i], (char*) cur->value);
         mu_assert(strcmp((char*) cur->value, tst2[i]) == 0,
                   "Fail to swap adjacent nodes correctly (forward)");
     }
@@ -109,8 +103,6 @@ char *test_swap_nodes()
          cur != NULL && i >= 0; 
          i--, cur = cur->prev) 
     {
-        printf("i: %d, tst2[i]: %s, cur->value: %s\n", 
-                i, tst2[i], (char*) cur->value);
         mu_assert(strcmp((char*) cur->value, tst2[i]) == 0,
                   "Fail to swap adjacent nodes correctly (backward)");
     }
@@ -154,6 +146,20 @@ char *test_bubble_sort()
     return NULL;
 }
 
+char *merge_sort_base_test()
+{
+    List *list = List_create();
+    List_push(list, "test1");
+    
+    list = List_merge_sort(list, (List_compare) strcmp);
+    mu_assert(strcmp((char*) list->first->value, "test1") == 0,
+              "Merge sort base case failed")
+
+    List_pop(list);
+    List_destroy(list);
+    return NULL;
+}
+
 char *merge_sort_test()
 {
     List *words = create_words();
@@ -178,6 +184,7 @@ char *all_tests()
 
     mu_run_test(test_swap_nodes);
     mu_run_test(test_bubble_sort);
+    mu_run_test(merge_sort_base_test);
     // mu_run_test(merge_sort_test);
 
     return NULL;

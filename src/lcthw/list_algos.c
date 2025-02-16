@@ -126,8 +126,6 @@ int List_bubble_sort(List *list, List_compare fn)
     * end procedure
     */
 
-    printf("List before\n");
-    List_print_str(list);
     int rc = 0;
     int cmp = 0;
     int swapped = 0;
@@ -145,8 +143,6 @@ int List_bubble_sort(List *list, List_compare fn)
             cmp = fn(node->value, node_next->value);
             if (cmp > 0) {      /* > 0 => node->value > node_next->value and we should swap */
                 rc = swap_nodes(list, node, node_next);
-                printf("Swapping nodes `node`: %s and `node_next`: %s\n",
-                       (char*) node->value, (char*) node_next->value);
                 check(rc == 0, "Fail during swap_nodes.");
                 swapped = 1;
                 node_next = node->next; 
@@ -159,10 +155,6 @@ int List_bubble_sort(List *list, List_compare fn)
         node_next = node->next;
     } while (swapped);
 
-    printf("List after\n");
-    List_print_str(list);
-    printf("\n");
-
     return 0;
 error:
     return 1;
@@ -171,8 +163,42 @@ error:
 
 List *List_merge_sort(List *list, List_compare fn)
 {
-    /* TODO: */
-    UNUSED(list);
-    UNUSED(fn);
+    /*
+    function merge_sort(list m) is
+    // Base case. A list of zero or one elements is sorted, by definition.
+    if length of m ≤ 1 then
+        return m
+
+    // Recursive case. First, divide the list into equal-sized sublists
+    // consisting of the first half and second half of the list.
+    // This assumes lists start at index 0.
+    var left := empty list
+    var right := empty list
+    for each x with index i in m do
+        if i < (length of m)/2 then
+            add x to left
+        else
+            add x to right
+
+    // Recursively sort both sublists.
+    left := merge_sort(left)
+    right := merge_sort(right)
+
+    // Then merge the now-sorted sublists.
+    
+    return merge(left, right)
+    */
+
+    /* Base Case */
+    if (list->count <= 1) return list;
+    
+    int middle = list->count / 2;
+
+    /* Recursive Case */
+    List *list_left  = List_create();
+    List *list_right = List_create();
+
+    
+
     return NULL;
 }
