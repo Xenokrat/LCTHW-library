@@ -5,7 +5,7 @@
 
 typedef int (*List_compare) (void *value1, void *value2);
 
-int swap_nodes(List *list, ListNode *node1, ListNode *node2);
+int swap_nodes(ListNode *node1, ListNode *node2);
 /* Sorts List type with `bubble sort` method
  * return 0 if OK, else 1
  */

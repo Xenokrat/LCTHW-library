@@ -48,7 +48,7 @@ char *test_swap_nodes()
     /* Now:
      * test1 -> test2 -> test3 -> test4
      */
-    swap_nodes(list, node1, node2);
+    swap_nodes(node1, node2);
     /* Should be:
      * test3 -> test2 -> test1 -> test4
      */
@@ -83,7 +83,7 @@ char *test_swap_nodes()
     }
     
     /* Another round for ajustent nodes */
-    swap_nodes(list, list->first, list->first->next);
+    swap_nodes(list->first, list->first->next);
     
     char *tst2[] = { "test2", "test3", "test1", "test4" };
     i = 0;
