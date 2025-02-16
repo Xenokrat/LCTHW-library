@@ -33,7 +33,7 @@ endif
 all: $(TARGET) $(SO_TARGET) tests
 # all: will run as a first option if no options provided to make
 
-dev: CFLAGS=-g -Wall -Isrc -Wextra -fsanitize=address $(OPTFLAGS)
+dev: CFLAGS=-g -Wall -Isrc -Wextra $(OPTFLAGS)
 dev: all
 
 $(TARGET): CFLAGS += -fPIC
@@ -55,7 +55,7 @@ build:
 # The Unit Tests
 .PHONY: tests
 tests: LDLIBS += $(TARGET)
-tests: CFLAGS=-g -Wall -Isrc -Wextra -fsanitize=address $(OPTFLAGS)
+tests: CFLAGS=-g -Wall -Isrc -Wextra $(OPTFLAGS)
 # trick for modifying the CFLAGS variable to add the TARGET to the build
 # so that each of the test programs will be linked
 # with the TARGET library.

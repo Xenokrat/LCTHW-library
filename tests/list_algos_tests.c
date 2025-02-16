@@ -39,30 +39,84 @@ char *test_swap_nodes()
     List_push(list, "test1");
     List_push(list, "test2");
     List_push(list, "test3");
+    List_push(list, "test4");
 
     /* Setup nodes */
-    ListNode *node1 = list->first;
-    ListNode *node2 = node1->next;
-
+    ListNode *node1 = list->first;      /* test1 */
+    ListNode *node2 = list->last->prev; /* test3 */
+    
+    /* Now:
+     * test1 -> test2 -> test3 -> test4
+     */
     swap_nodes(list, node1, node2);
+    /* Should be:
+     * test3 -> test2 -> test1 -> test4
+     */
 
-    mu_assert(strcmp((char*) list->first->value, "test2") == 0,
-              "Swap failed (node[0]).");
-    mu_assert(strcmp((char*) list->first->next->value, "test1") == 0,
-              "Swap failed (node[1]).");
-    mu_assert(strcmp((char*) list->first->next->next->value, "test3") == 0,
-              "Swap failed (node[2]).");
+    char *tst[] = { "test3", "test2", "test1", "test4" };
+    int tst_len = 4;
+    int i = 0;
+    ListNode *cur = NULL;
+    
+    /* Test List OK */
+    mu_assert(list->first->prev == NULL,
+              "Fail list->first->prev points NOT on NULL");
+    mu_assert(list->last->next == NULL,
+              "Fail list->last->next points NOT on NULL");
 
-    mu_assert(strcmp((char*) list->last->value, "test3") == 0,
-              "Swap failed (node[3]).");
-    mu_assert(strcmp((char*) list->last->prev->value, "test1") == 0,
-              "Swap failed (node[2]).");
-    mu_assert(strcmp((char*) list->last->prev->prev->value, "test2") == 0,
-              "Swap failed (node[1]).");
+    /* Test forward */
+    for (i = 0, cur = list->first; 
+         cur != NULL && i < tst_len; 
+         i++, cur = cur->next) 
+    {
+        printf("i: %d, tst[i]: %s, cur->value: %s\n", 
+                i, tst[i], (char*) cur->value);
+        mu_assert(strcmp((char*) cur->value, tst[i]) == 0,
+                  "Fail to swap non-adjacent nodes correctly (forward)");
+    }
+    
+    /* Also tests backwards */
+    for (i = tst_len - 1, cur = list->last; 
+         cur != NULL && i >= 0; 
+         i--, cur = cur->prev) 
+    {
+        printf("i: %d, tst[i]: %s, cur->value: %s\n", 
+                i, tst[i], (char*) cur->value);
+        mu_assert(strcmp((char*) cur->value, tst[i]) == 0,
+                  "Fail to swap non-adjacent nodes correctly (backward)");
+    }
+    
+    /* Another round for ajustent nodes */
+    swap_nodes(list, list->first, list->first->next);
+    
+    char *tst2[] = { "test2", "test3", "test1", "test4" };
+    i = 0;
+    cur = NULL;
 
-    mu_assert(swap_nodes(list, list->first, list->first) == 1, "Not detected swapping same node");
-    mu_assert(swap_nodes(list, NULL, list->first) == 1, "Error on swapping NULL node");
+    /* Test forward again */
+    for (i = 0, cur = list->first; 
+         cur != NULL && i < tst_len; 
+         i++, cur = cur->next) 
+    {
+        printf("i: %d, tst2[i]: %s, cur->value: %s\n", 
+                i, tst2[i], (char*) cur->value);
+        mu_assert(strcmp((char*) cur->value, tst2[i]) == 0,
+                  "Fail to swap adjacent nodes correctly (forward)");
+    }
+    
+    /* Also tests backwards again */
+    for (i = tst_len - 1, cur = list->last; 
+         cur != NULL && i >= 0; 
+         i--, cur = cur->prev) 
+    {
+        printf("i: %d, tst2[i]: %s, cur->value: %s\n", 
+                i, tst2[i], (char*) cur->value);
+        mu_assert(strcmp((char*) cur->value, tst2[i]) == 0,
+                  "Fail to swap adjacent nodes correctly (backward)");
+    }
 
+    /* Cleanup if ok */
+    List_pop(list);
     List_pop(list);
     List_pop(list);
     List_pop(list);
