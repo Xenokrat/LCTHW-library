@@ -3,6 +3,8 @@
 
 #include <stdlib.h>
 
+typedef int (*List_compare) (void *value1, void *value2);
+
 struct ListNode;
 
 /* Node is instance of node in Double linked-list data structure */
@@ -45,24 +47,30 @@ void *List_pop(List *list);                    /* pop last ListNode from the end
 
 void List_unshift(List *list, void *value);    /* push new ListNode with `value to the start of List */
 void *List_shift(List *list);                  /* pop last ListNode from start of List and return it's `value` */ 
+ListNode *List_shift_get(List *list);          /* same as List_shif but returns node instead */ 
 
 void *List_remove(List *list, ListNode *node); /* removes ListNode from List and frees it */
 
 ListNode *List_find(List *list, void *value, Fn_node_eq fn);  /* return pointer to ListNode with value `value from `list` */
 
 List *List_copy(List *list);                   /* create new List which is copy of `list` and returns pointer to it */
-List *List_join(List *list1, List *list2);     /* create new List with `list2` added to the end of `list1` and returns pointer to it  */
+List *List_join(List *list1, List *list2);     /* re-use list1 adding nodes of list2 to it and free list2, return pointer to list1 */
 
-/*
- * split list on `node` value and returns pointer to new list with values AFTER `node`
- * 
- * list( node1("val1")->node2("val2")->node3("val3") )
- * 	=> List_split(list, "val2") results in:
- * 
- * list( node1("val2")->node2("val2") ) ++
- * 	return new_list ( node3("val3") )
- */
-List *List_split(List *list, void *value, Fn_node_eq fn);  
+/* pre-condition: list1 and list2 are soreted
+ * re-using list1 (or list2) to join all nodes in sorted order */
+List *List_join_sorted(List *list1, List *list2, List_compare fn);     
+
+/* split list in two
+ * used for algorithms like sorting
+ * modify list argument in-place, returns pointer to new second list
+ * ( node1 -> node2 -> node3 ) =(List_split)> ( node1 -> node2 ) -> ( node3 )
+ * (  ) =(List_split)> (  )
+ * ( node1  ) =(List_split)> ( node1 ) ( ) */
+List *List_split(List *list);  
+
+/* Inserts `value` in already sorted `list` at right position so it
+ * remains sorted. Using `fn` to compare elements */
+void List_insert_sorted(List *list, void *value, List_compare fn);  
 
 /* Iterator for traversing the List struct
  * L - list
@@ -73,11 +81,13 @@ List *List_split(List *list, void *value, Fn_node_eq fn);
  * Example:
  * 	LIST_FOREACH(list, first, next, cur) {
  *           printf(cur->value);
- * 	}
- */
+ * 	} */
 #define LIST_FOREACH(L, S, M, V) \
     ListNode *_node = NULL; \
     ListNode *V = NULL; \
     for(V = _node = L->S; _node != NULL; V = _node = _node->M)
+
+/* Helper function to check that we are not corrupted List */
+int check_consistency(List *list, char *values[], List_compare fn);
 
 #endif // lcthw_List_h 
