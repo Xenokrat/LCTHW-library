@@ -300,8 +300,7 @@ char *test_join_sorted()
     mu_assert(check_consistency(list, values, (List_compare) strcmp) == 0,
               "List_join_sorted failed");
 
-    List_destroy(list1);
-    List_destroy(list2);
+    List_destroy(list);
     
     return NULL;
 }

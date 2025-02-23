@@ -19,21 +19,6 @@ List *create_words()
     return words;
 }
 
-int is_sorted(List *words)
-{
-    if (words == NULL) return 0;
-
-    LIST_FOREACH(words, first, next, cur) {
-        if (cur->next && strcmp(cur->value, cur->next->value) > 0) {
-            debug("%s %s", (char *)cur->value,
-                           (char *)cur->next->value);
-            return 0;
-        }
-    }
-
-    return 1;
-}
-
 char *test_swap_nodes()
 {
     List *list = List_create();
@@ -228,6 +213,92 @@ char *merge_test()
     return NULL;
 }
 
+char *listnode_merge_test()
+{
+    ListNode* res = NULL;
+    List* list1 = List_create();
+    List* list2 = List_create();
+
+    /* both NULL returns NULL */
+    res = ListNode_merge(list1->first, list2->first, (List_compare) strcmp);
+    mu_assert(res == NULL, "Result of merging NULLs should be NULL");
+    
+    /* one NULL returns other */
+    List_push(list1, "test1");
+    List_push(list1, "test3");
+    List_push(list1, "test5");
+    
+    res = ListNode_merge(list1->first, list2->first, (List_compare) strcmp);
+    mu_assert(
+        strcmp((char*) res->value,             "test1") == 0 && 
+        strcmp((char*) res->next->value,       "test3") == 0 && 
+        strcmp((char*) res->next->prev->value, "test1") == 0, 
+        "Result of merging NULL and not NULL is just non-NULL nodes"
+    );
+    
+    /* General case */
+    List_push(list2, "test2");
+    List_push(list2, "test4");
+    
+    List* test = List_create();
+    test->first = list1->first;
+    test->last  = list1->last;
+    test->count = 5;
+
+    res = ListNode_merge(list1->first, list2->first, (List_compare) strcmp);
+
+    char *values[] = { "test1", "test2", "test3", "test4", "test5" };
+    mu_assert(check_consistency(test, values, (List_compare) strcmp) == 0,
+              "Given after ListNode_merge list is wrong.");
+
+    /* Cleanup */
+    free(list1);
+    free(list2);
+    List_destroy(test);
+
+    return NULL;
+}
+
+char *merge_sort_bottomup_test()
+{
+    mu_assert(
+        List_merge_sort_bottomup(NULL, (List_compare) strcmp) == NULL, 
+        "Should correctly works with NULL"
+    );
+
+    List *words = create_words();
+    
+    // should work on a list that needs sorting
+    List *res = List_merge_sort_bottomup(words, (List_compare) strcmp);
+    mu_assert(is_sorted(res), "Words are not sorted after merge sort.");
+
+    List *res2 = List_merge_sort_bottomup(res, (List_compare) strcmp);
+    mu_assert(is_sorted(res2), "Should still be sorted after merge sort.");
+
+    // List_destroy(words);
+    return NULL;
+}
+
+char *quick_sort_test()
+{
+    List *list = List_create();
+    List *res = List_quick_sort(list, (List_compare) strcmp);
+    mu_assert(res != NULL && res->first == NULL, 
+              "Result of sorting empty list should be empty list");
+
+    List_push(list, "test1");
+    List_push(list, "test3");
+    List_push(list, "test2");
+    List_push(list, "test4");
+
+    char *values[] = { "test1", "test2", "test3", "test4" };
+    res = List_quick_sort(list, (List_compare) strcmp);
+    mu_assert(check_consistency(list, values, (List_compare) strcmp), "Faild to Quick Sort.");
+    
+    // List_destroy(res);
+    return NULL;
+}
+
 char *all_tests()
 {
     mu_suite_start();
@@ -238,6 +309,9 @@ char *all_tests()
     mu_run_test(merge_sort_base_test);
     mu_run_test(merge_test);
     mu_run_test(merge_sort_test);
+    mu_run_test(listnode_merge_test);
+    mu_run_test(merge_sort_bottomup_test);
+    mu_run_test(quick_sort_test);
 
     return NULL;
 }
