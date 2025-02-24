@@ -8,6 +8,11 @@ int str_node_eq(void *value1, void *value2)
     return (strcmp((char*)value1, (char*)value2) == 0); 
 }
 
+int intcmp(void *value1, void *value2)
+{
+    return *(int *) value1 - *(int *) value2;
+}
+
 int check_consistency(List *list, char *values[], List_compare fn)
 {
     int count = 0;
@@ -47,20 +52,31 @@ error:
 
 void List_print_str(List *list)
 {
-    {
-        printf("X->");
-        LIST_FOREACH(list, first, next, cur) {
-            printf("%s->", (char*) cur->value);
-        }
-        printf("X\n");
+    int i = 0;
+    ListNode *node = list->first;
+    while (node) {
+        printf("%s <=> ", (char*) node->value);
+        node = node->next;
+        i = 1;
     }
-    {
-        printf("X<-");
-        LIST_FOREACH(list, last, prev, cur) {
-            printf("%s<-", (char*) cur->value);
-        }
-        printf("X\n");
+    if (i == 0)
+        printf("EMPTY\n");
+    else
+        printf("END\n");
+}
+
+void ListNode_print_str(ListNode *node)
+{
+    int i = 0;
+    while (node) {
+        printf("%s <=> ", (char*) node->value);
+        node = node->next;
+        i = 1;
     }
+    if (i == 0)
+        printf("EMPTY\n");
+    else
+        printf("END\n");
 }
 
 List *List_create(void)

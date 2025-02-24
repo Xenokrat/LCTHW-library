@@ -29,4 +29,7 @@ ListNode *ListNode_merge(ListNode *node1, ListNode *node2, List_compare fn);
 /* Sorts List type with `quick sort` method */
 List *List_quick_sort(List *list, List_compare fn);
 
+/* Sorts List type with `quick sort` method (INPLACE) */
+int List_quick_sort2(List *list, List_compare fn);
+
 #endif	// lcthw_List_Algos_h

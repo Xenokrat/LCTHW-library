@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 typedef int (*List_compare) (void *value1, void *value2);
+int intcmp(void *value1, void *value2);
 
 struct ListNode;
 
@@ -36,6 +37,7 @@ void List_clear(List *list);                   /* Deallocate all values in ListN
 void List_clear_destroy(List *list);           /* Free all values in ListNodes, free ListNodes, free List */
 
 void List_print_str(List *list);           /* This just a helper function to print list to stdout */
+void ListNode_print_str(ListNode *node);   /* This just a helper function to print from node to stdout */
 
 /* Macros for easy access to count, first and last ListNode in List */
 #define List_count(A) ((A)->count)

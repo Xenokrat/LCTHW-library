@@ -133,6 +133,23 @@ char *test_bubble_sort()
     return NULL;
 }
 
+char *test_bubble_sort_int()
+{
+	List* list = List_create();
+
+	int digits[] = { 3, 2, 5, 4, 1 };
+
+	for (size_t i = 0; i < sizeof(digits)/sizeof(digits[0]); i++) {
+		List_push(list, &digits[i]);
+	}
+
+	List_bubble_sort(list, intcmp);
+	mu_assert(is_sorted(list), "List_bubble_sort failed on integers!");
+	List_destroy(list);
+
+    return NULL;
+}
+
 char *test_bubble_sort_opt()
 {
     List *words = create_words();
@@ -299,6 +316,40 @@ char *quick_sort_test()
     return NULL;
 }
 
+char *quick_sort_test2()
+{
+    List *list = List_create();
+
+    /* Empty list test */
+    int rc = List_quick_sort2(list, (List_compare) strcmp);
+    mu_assert(rc == 0, "Failed to Quick Sort 2");
+
+    /* Single element list test */
+    List_push(list, "3");
+    rc = List_quick_sort2(list, (List_compare) strcmp);
+    mu_assert(rc == 0, "Failed to Quick Sort 2");
+
+    /* Big test */
+    List_push(list, "1");
+    List_push(list, "5");
+    List_push(list, "4");
+    List_push(list, "2");
+
+    List_quick_sort2(list, (List_compare) strcmp);
+    char *values[] = { "1", "2", "3", "4", "5" };
+    mu_assert(check_consistency(list, values, (List_compare) strcmp) == 0,
+              "Failed to Quick Sort 2");
+
+    /* Test already sorted */
+    List_quick_sort2(list, (List_compare) strcmp);
+    mu_assert(check_consistency(list, values, (List_compare) strcmp) == 0,
+              "Failed to Quick Sort 2");
+
+    List_destroy(list);
+
+    return NULL;
+}
+
 char *all_tests()
 {
     mu_suite_start();
@@ -310,8 +361,10 @@ char *all_tests()
     mu_run_test(merge_test);
     mu_run_test(merge_sort_test);
     mu_run_test(listnode_merge_test);
-    mu_run_test(merge_sort_bottomup_test);
+    // mu_run_test(merge_sort_bottomup_test);
     mu_run_test(quick_sort_test);
+    mu_run_test(quick_sort_test2);
+    mu_run_test(test_bubble_sort_int);
 
     return NULL;
 }

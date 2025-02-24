@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "list_algos.h"
 #include "dbg.h"
 #include "list.h"
@@ -24,7 +25,6 @@ int swap_nodes(ListNode *node1, ListNode *node2)
 {
     check_mem(node1);
     check_mem(node2);
-    check(node1 != node2, "Swapping the same node!");
 
     void *tmp = node1->value;
     node1->value = node2->value;
@@ -455,8 +455,7 @@ ListNode *ListNode_qs(ListNode *node, List_compare fn)
     ListNode_append(left_end, node);
     ListNode_append(node, ListNode_qs(right_start, fn));
 
-error:
-    return NULL;
+    return left_start;
 }
 
 List *List_quick_sort(List *list, List_compare fn)
@@ -483,4 +482,74 @@ List *List_quick_sort(List *list, List_compare fn)
 
 error:
     return NULL;
+}
+
+ListNode *partition_qs(ListNode *low, ListNode *high, List_compare fn)
+{
+    /* Shouldn't operate on NULL nodes
+     * We checked this in main function (hopefully) */
+    check_mem(low);
+    check_mem(high);
+
+    int cmp = 0;
+    ListNode *pivot = high;
+    /* Pointer to place smaller elements */
+    ListNode *smaller = low->prev;
+    ListNode *current = low;
+
+    while (current != high) {
+        /* Push smaller elements to the left */       
+        cmp = fn(current->value, pivot->value);
+        if (cmp <= 0) {
+            smaller = (!smaller) ? low : smaller->next;
+            swap_nodes(smaller, current);
+        }
+        current = current->next;
+    }
+
+    /* Move `smaller` to the correct pivot position */
+    smaller = (!smaller) ? low : smaller->next;
+    swap_nodes(smaller, high);
+
+    return smaller;
+
+error:
+    return NULL;
+}
+
+void ListNode_qs2(ListNode *low, ListNode *high, List_compare fn)
+{
+    ListNode *partition_node = NULL;
+
+    /* Edge case: List empty */
+    if (low == NULL || high == NULL) return;
+
+    /* Edge case: One element list */
+    if (low == high) return;
+
+    /* Edge case: off-by-one invalid range */
+    if (low == high->next) return;
+
+    partition_node = partition_qs(low, high, fn);
+
+    /* case: Partition Node is null */
+    if (partition_node == NULL)
+        return;
+
+    ListNode_qs2(low, partition_node->prev, fn);
+    ListNode_qs2(partition_node->next, high, fn);
+}
+
+int List_quick_sort2(List *list, List_compare fn)
+{
+    check_mem(list);
+
+    ListNode *low  = list->first;
+    ListNode *high = list->last;
+
+    ListNode_qs2(low, high, fn);
+
+    return 0;
+error:
+    return -1;
 }
