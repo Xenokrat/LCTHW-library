@@ -7,7 +7,7 @@ static int *val2 = NULL;
 
 char *test_create()
 {
-  array = DArray_create(sizeof(int), 100);
+  array = DArray_create(sizeof(int), 100, (DArray_expand_strategy) DArray_expand);
   mu_assert(array != NULL, "DArray_create failed.");
   mu_assert(array->contents != NULL, "contents are wrong in darray.");
   mu_assert(array->end == 0, "end isn't at the right spot.");

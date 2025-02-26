@@ -8,7 +8,7 @@
 #include <lcthw/darray.h>
 #include <lcthw/dbg.h>
 
-#define TEST_ARR_SIZE 10000
+#define TEST_ARR_SIZE 100000
 #define TEST_ARR_MAX 1000
 
 List* list = NULL;
@@ -35,7 +35,7 @@ int setUp(void)
 {
     size_t i = 0;
     list = List_create();
-    array = DArray_create(sizeof(int), 100);
+    array = DArray_create(sizeof(int), 100, (DArray_expand_strategy) DArray_expand);
 
     check_mem(list);
     check_mem(array);
@@ -71,7 +71,7 @@ void test_push()
 
     /* Duplicates setUp but whatever */
     List *push_list    = List_create();
-    DArray *push_array = DArray_create(sizeof(int), 100);
+    DArray *push_array = DArray_create(sizeof(int), 100, (DArray_expand_strategy) DArray_expand);
     int *int_arr = create_random_int_array(TEST_ARR_SIZE, TEST_ARR_MAX); 
 
     start_time = (float)clock() / CLOCKS_PER_SEC; 
@@ -129,7 +129,8 @@ void test_insertion(void)
            end_time - start_time);
 
     /* test DArray */
-    DArray *array_ins = DArray_create(sizeof(int), TEST_ARR_SIZE);
+    DArray *array_ins = DArray_create(sizeof(int), TEST_ARR_SIZE,
+                                      (DArray_expand_strategy) DArray_expand);
     int *int_arr = create_random_int_array(TEST_ARR_SIZE, TEST_ARR_MAX); 
     for (i = 0; i < TEST_ARR_SIZE; i++) {
         int *value = (int *) DArray_new(array_ins);
@@ -157,6 +158,49 @@ void test_insertion(void)
     free(int_arr);
 }
 
+void test_expand(void)
+{
+    float start_time = 0.0;
+    float end_time = 0.0;
+    size_t i = 0;
+    unsigned pos = 0;
+
+    DArray *darr1 = DArray_create(sizeof(int),
+                                  100, 
+                                  (DArray_expand_strategy) DArray_expand);
+
+    DArray *darr2 = DArray_create(sizeof(int),
+                                  100, 
+                                  (DArray_expand_strategy) DArray_expand_mul);
+
+    int *arr_of_int = create_random_int_array(TEST_ARR_SIZE, TEST_ARR_MAX);
+
+    start_time = (float)clock() / CLOCKS_PER_SEC; 
+    for (i = 0; i < TEST_ARR_SIZE; i++) {
+        int *el = (int *) DArray_new(array); 
+        *el = arr_of_int[i];
+        DArray_push(darr1, el);
+    }
+    end_time = (float)clock() / CLOCKS_PER_SEC; 
+    printf("DArray_push time for +300 strategy is %f\n", 
+           end_time - start_time);
+
+    start_time = (float)clock() / CLOCKS_PER_SEC; 
+    for (i = 0; i < TEST_ARR_SIZE; i++) {
+        int *el = (int *) DArray_new(array); 
+        *el = arr_of_int[i];
+        DArray_push(darr2, el);
+    }
+    end_time = (float)clock() / CLOCKS_PER_SEC; 
+    printf("DArray_push time for *2 strategy is %f\n", 
+           end_time - start_time);
+
+    /* Cleanup */
+    free(arr_of_int);
+    DArray_clear_destroy(darr1);
+    DArray_clear_destroy(darr2);
+}
+
 // Test deletion
 
 void tearDown(void)
@@ -178,6 +222,9 @@ int main()
 
     printf("\n=== TEST INSERT PERFORMANCE ===\n");
     test_insertion();
+
+    printf("\n=== TEST DARRAY +300 vs *2 EXPAND  ===\n");
+    test_expand();
 
     tearDown();
     return 0;

@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-DArray *DArray_create(size_t element_size, size_t initial_max)
+DArray *DArray_create(size_t element_size, size_t initial_max,
+                      DArray_expand_strategy fn)
 {
     DArray *array = malloc(sizeof(DArray));
     check_mem(array); 
@@ -20,6 +21,7 @@ DArray *DArray_create(size_t element_size, size_t initial_max)
     check(element_size >= 1, "Element size should be at least 1");
 
     array->expand_rate = DEFAULT_EXPAND_RATE;
+    array->fn = fn;
 
     return array;
 
@@ -76,6 +78,22 @@ error:
     return -1;
 }
 
+int DArray_expand_mul(DArray *array)
+{
+    check_mem(array); 
+
+    size_t old_max = array->max;
+    check(DArray_resize(array, array->max * 2) == 0,
+          "Failed to expand array to new size: %d",
+    	  array->max * 2);
+
+    memset(array->contents + old_max, 0, old_max);
+    return 0;
+
+error:
+    return -1;
+}
+
 int DArray_contract(DArray *array)
 {
     int new_size = array->end < (int)array->expand_rate ?
@@ -106,7 +124,7 @@ int DArray_push(DArray *array, void *el)
     array->end++;
 
     if (DArray_end(array) >= DArray_max(array)) {
-        return DArray_expand(array);
+        return array->fn(array);
     } else {
         return 0;
     }
@@ -125,7 +143,7 @@ int DArray_insert(DArray *array, unsigned position, void *el)
     array->end++;
 
     if (DArray_end(array) >= DArray_max(array)) {
-        rc = DArray_expand(array);
+        rc = array->fn(array);
         check(rc != 0, "Failed to expand array on insert.");
     }
     for (i = array->end - 1; i > position; i--) {

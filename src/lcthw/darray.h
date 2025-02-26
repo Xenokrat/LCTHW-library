@@ -4,21 +4,29 @@
 #include <assert.h>
 #include "./dbg.h"
 
+struct DArray;
+typedef int (*DArray_expand_strategy) (struct DArray *array);
+
 typedef struct DArray {
-  int end;
-  int max;
-  size_t element_size;
-  size_t expand_rate;
-  void **contents;
+    int end;
+    int max;
+    size_t element_size;
+    size_t expand_rate;
+    void **contents;
+    DArray_expand_strategy fn;
 } DArray;
 
-DArray *DArray_create(size_t element_size, size_t initial_max);
+
+DArray *DArray_create(size_t element_size, 
+                      size_t initial_max,
+                      DArray_expand_strategy fn);
 
 void DArray_destroy(DArray *array);
 
 void DArray_clear(DArray *array);
 
 int DArray_expand(DArray *array);
+int DArray_expand_mul(DArray *array);
 
 int DArray_contract(DArray *array);
 
