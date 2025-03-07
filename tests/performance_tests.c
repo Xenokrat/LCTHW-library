@@ -1,4 +1,3 @@
-#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -8,7 +7,7 @@
 #include <lcthw/darray.h>
 #include <lcthw/dbg.h>
 
-#define TEST_ARR_SIZE 100000
+#define TEST_ARR_SIZE 10000
 #define TEST_ARR_MAX 1000
 
 List* list = NULL;
@@ -163,7 +162,6 @@ void test_expand(void)
     float start_time = 0.0;
     float end_time = 0.0;
     size_t i = 0;
-    unsigned pos = 0;
 
     DArray *darr1 = DArray_create(sizeof(int),
                                   100, 

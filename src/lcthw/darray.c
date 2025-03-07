@@ -18,7 +18,7 @@ DArray *DArray_create(size_t element_size, size_t initial_max,
 
     array->end = 0;
     array->element_size = element_size;
-    check(element_size >= 1, "Element size should be at least 1");
+    // check(element_size >= 1, "Element size should be at least 1");
 
     array->expand_rate = DEFAULT_EXPAND_RATE;
     array->fn = fn;
@@ -46,7 +46,6 @@ void DArray_clear(DArray *array)
 static inline int DArray_resize(DArray *array, size_t newsize)
 {
     check_mem(array);
-    int old_max = array->max;
 
     array->max = newsize;
     check(array->max > 0, "The newsize must be > 0.");

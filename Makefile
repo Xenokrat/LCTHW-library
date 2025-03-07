@@ -1,6 +1,6 @@
 CC=clang
 # CFLAGS=-g -Wall -Isrc -rdynamic -DNDEBUG $(OPTFLAGS) 
-CFLAGS=-g -Wall -Isrc -DNDEBUG $(OPTFLAGS) 
+CFLAGS=-g -Wall -Isrc $(OPTFLAGS) 
 # -Isrc - включить все header-files из src
 # -rdynamic - сказать линкеру включить все символы, не только используемые
 # 	это нужно для bactrace или dlopen
