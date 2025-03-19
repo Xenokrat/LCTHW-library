@@ -1,0 +1,40 @@
+RUN --- 1
+DEBUG: tests/string_algos_tests.c:test_scan_performance:109: SCAN COUNT: 141348000, END TIME: 2, OPS: 70674000.000000
+DEBUG: tests/string_algos_tests.c:test_find_performance:80: FIND COUNT: 11509000, END TIME: 2, OPS: 5754500.000000
+DEBUG: tests/string_algos_tests.c:test_binstr_performance:58: BINSTR COUNT: 122430000, END TIME: 2, OPS: 61215000.000000
+RUN --- 2
+DEBUG: tests/string_algos_tests.c:test_scan_performance:109: SCAN COUNT: 146108000, END TIME: 2, OPS: 73054000.000000
+DEBUG: tests/string_algos_tests.c:test_find_performance:80: FIND COUNT: 11622000, END TIME: 2, OPS: 5811000.000000
+DEBUG: tests/string_algos_tests.c:test_binstr_performance:58: BINSTR COUNT: 122114000, END TIME: 2, OPS: 61057000.000000
+RUN --- 3
+DEBUG: tests/string_algos_tests.c:test_scan_performance:109: SCAN COUNT: 146616000, END TIME: 2, OPS: 73308000.000000
+DEBUG: tests/string_algos_tests.c:test_find_performance:80: FIND COUNT: 11486000, END TIME: 2, OPS: 5743000.000000
+DEBUG: tests/string_algos_tests.c:test_binstr_performance:58: BINSTR COUNT: 122351000, END TIME: 2, OPS: 61175500.000000
+RUN --- 4
+DEBUG: tests/string_algos_tests.c:test_scan_performance:109: SCAN COUNT: 145828000, END TIME: 2, OPS: 72914000.000000
+DEBUG: tests/string_algos_tests.c:test_find_performance:80: FIND COUNT: 11452000, END TIME: 2, OPS: 5726000.000000
+DEBUG: tests/string_algos_tests.c:test_binstr_performance:58: BINSTR COUNT: 122430000, END TIME: 2, OPS: 61215000.000000
+RUN --- 5
+DEBUG: tests/string_algos_tests.c:test_scan_performance:109: SCAN COUNT: 146324000, END TIME: 2, OPS: 73162000.000000
+DEBUG: tests/string_algos_tests.c:test_find_performance:80: FIND COUNT: 11411000, END TIME: 2, OPS: 5705500.000000
+DEBUG: tests/string_algos_tests.c:test_binstr_performance:58: BINSTR COUNT: 122636000, END TIME: 2, OPS: 61318000.000000
+RUN --- 6
+DEBUG: tests/string_algos_tests.c:test_scan_performance:109: SCAN COUNT: 146464000, END TIME: 2, OPS: 73232000.000000
+DEBUG: tests/string_algos_tests.c:test_find_performance:80: FIND COUNT: 11469000, END TIME: 2, OPS: 5734500.000000
+DEBUG: tests/string_algos_tests.c:test_binstr_performance:58: BINSTR COUNT: 122648000, END TIME: 2, OPS: 61324000.000000
+RUN --- 7
+DEBUG: tests/string_algos_tests.c:test_scan_performance:109: SCAN COUNT: 147116000, END TIME: 2, OPS: 73558000.000000
+DEBUG: tests/string_algos_tests.c:test_find_performance:80: FIND COUNT: 11166000, END TIME: 2, OPS: 5583000.000000
+DEBUG: tests/string_algos_tests.c:test_binstr_performance:58: BINSTR COUNT: 122221000, END TIME: 2, OPS: 61110500.000000
+RUN --- 8
+DEBUG: tests/string_algos_tests.c:test_scan_performance:109: SCAN COUNT: 146120000, END TIME: 2, OPS: 73060000.000000
+DEBUG: tests/string_algos_tests.c:test_find_performance:80: FIND COUNT: 11558000, END TIME: 2, OPS: 5779000.000000
+DEBUG: tests/string_algos_tests.c:test_binstr_performance:58: BINSTR COUNT: 122586000, END TIME: 2, OPS: 61293000.000000
+RUN --- 9
+DEBUG: tests/string_algos_tests.c:test_scan_performance:109: SCAN COUNT: 146372000, END TIME: 2, OPS: 73186000.000000
+DEBUG: tests/string_algos_tests.c:test_find_performance:80: FIND COUNT: 11174000, END TIME: 2, OPS: 5587000.000000
+DEBUG: tests/string_algos_tests.c:test_binstr_performance:58: BINSTR COUNT: 122632000, END TIME: 2, OPS: 61316000.000000
+RUN --- 10
+DEBUG: tests/string_algos_tests.c:test_scan_performance:109: SCAN COUNT: 146840000, END TIME: 2, OPS: 73420000.000000
+DEBUG: tests/string_algos_tests.c:test_find_performance:80: FIND COUNT: 11407000, END TIME: 2, OPS: 5703500.000000
+DEBUG: tests/string_algos_tests.c:test_binstr_performance:58: BINSTR COUNT: 122659000, END TIME: 2, OPS: 61329500.000000

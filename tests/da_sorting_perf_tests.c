@@ -7,7 +7,7 @@
 #include <lcthw/radixmap.h>
 #include <lcthw/dbg.h>
 
-#define MAX_ARRAY_SIZE 25000
+#define MAX_ARRAY_SIZE 10000
 
 static int uint_cmp(void *val1, void *val2)
 {
@@ -15,8 +15,7 @@ static int uint_cmp(void *val1, void *val2)
 }
 
 static uint32_t *create_array()
-{
-    size_t i = 0;
+{    size_t i = 0;
 
 	uint32_t *array = calloc(MAX_ARRAY_SIZE, sizeof(uint32_t));
 	check_mem(array);

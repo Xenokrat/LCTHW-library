@@ -86,13 +86,15 @@ void RadixMap_sort(RadixMap *map)
 
 RMElement *RadixMap_find(RadixMap *map, uint32_t to_find)
 {
+    check_mem(map);
+    check_mem(map->contents);
     
     int low = 0;
     int high = map->end - 1;
     RMElement *data = map->contents;
 
     while (low <= high) {
-
+        int middle = low + (high - low) / 2;
         uint32_t key = data[middle].data.key;
 
         if (to_find < key)

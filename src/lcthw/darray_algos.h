@@ -21,5 +21,4 @@ int DArray_sort_add(DArray *array, void* el, DArray_sort_fn fn,
                     DArray_compare cmp);
 
 int DArray_find(DArray *array, void* el, DArray_compare cmp);
-
 #endif // darray_algos_h
