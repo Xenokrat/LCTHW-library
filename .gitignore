@@ -1,5 +1,7 @@
 *.so
 *.o
 *.a
+tests/*tests
+.cache
 tests/runtests
 .venv/

@@ -1,3 +1,0 @@
-CompileFlags:
-  Add:
-    - "-Isrc"            # e.g `-I/usr/include/SDL2`
